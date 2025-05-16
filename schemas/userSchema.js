@@ -58,6 +58,7 @@ export const userTypeDefs = `#graphql
 export const userResolvers = {
   Query: {
     getUsers: async (parent, args, context) => {
+      await context.authentication();
       const users = await User.findAll();
 
       return users;
@@ -71,6 +72,8 @@ export const userResolvers = {
     },
 
     searchUsers: async (_, args) => {
+      await context.authentication();
+
       const { query } = args;
       const users = await User.searchByNameOrUsername(query);
       return users;

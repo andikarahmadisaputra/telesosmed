@@ -65,6 +65,8 @@ export const postTypeDefs = `#graphql
 export const postResolvers = {
   Query: {
     getPosts: async () => {
+      await context.authentication();
+
       const cachedPosts = await redis.get("posts");
       if (cachedPosts) return JSON.parse(cachedPosts);
 
@@ -75,6 +77,8 @@ export const postResolvers = {
     },
 
     getPostById: async (_, args) => {
+      await context.authentication();
+
       const { id } = args;
       const post = await Post.findById(id);
 

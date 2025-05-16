@@ -14,6 +14,7 @@ import User from "./models/User.js";
 const server = new ApolloServer({
   typeDefs: [userTypeDefs, authTypeDefs, postTypeDefs],
   resolvers: [userResolvers, authResolvers, postResolvers],
+  introspection: true,
 });
 
 const { url } = await startStandaloneServer(server, {

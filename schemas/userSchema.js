@@ -71,7 +71,7 @@ export const userResolvers = {
       return user;
     },
 
-    searchUsers: async (_, args) => {
+    searchUsers: async (_, args, context) => {
       await context.authentication();
 
       const { query } = args;

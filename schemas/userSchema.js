@@ -7,14 +7,6 @@ export const userTypeDefs = `#graphql
     name: String
     username: String
     email: String
-    password: String
-  }
-
-  input UserInput {
-    name: String
-    username: String
-    email: String
-    password: String
   }
 
   type Follow {
@@ -34,12 +26,11 @@ export const userTypeDefs = `#graphql
     userId: ID!
   }
 
-   type UserDetail {
+  type UserDetail {
     _id: ID 
     name: String
     username: String
     email: String
-    password: String
     following: [User]
     follower: [User]
   }
@@ -48,6 +39,7 @@ export const userTypeDefs = `#graphql
     getUsers: [User]
     getUserById(id: ID): UserDetail
     searchUsers(query: String): [User]
+    getProfile: UserDetail
   }
 
   type Mutation {
@@ -65,10 +57,20 @@ export const userResolvers = {
     },
 
     getUserById: async (_, args) => {
+      await context.authentication();
+
       const { id } = args;
       const user = await User.findById(id);
 
       return user;
+    },
+
+    getProfile: async (_, args, context) => {
+      const user = await context.authentication();
+
+      const profile = await User.findById(user._id);
+
+      return profile;
     },
 
     searchUsers: async (_, args, context) => {

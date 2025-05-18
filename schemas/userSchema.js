@@ -56,7 +56,7 @@ export const userResolvers = {
       return users;
     },
 
-    getUserById: async (_, args) => {
+    getUserById: async (_, args, context) => {
       await context.authentication();
 
       const { id } = args;
